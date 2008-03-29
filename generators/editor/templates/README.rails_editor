@@ -6,17 +6,10 @@ If you did not receive this licence file you can contact the author
 for a copy at bougy dot man at gmail dot com, or see the latest
 version at http://www.gnu.org/copyleft/gpl.html.
 
-This is a little command wrapper for screen + vim to give
+This is a little command wrapper for screen + vim (or emacs-ick) to give
 you a nice IDE session for rails development.  Console junkies
 should like it, but through the use of Escreen it can  be 
 GUI friendly as well. 
-
-Checking out the plugin in vendor/plugins, change to a rails_root and run the command:
-  ./script/generate editor --help
-
-Using the options you like will install the ./script/editor IDE.
-
-Then you'll have ./script/editor available
 
 ./script/editor -? for usage (from the RAILS_ROOT).
 
@@ -64,7 +57,7 @@ VIM ADDITIONS
   * In any ruby file, typing 'def' in insert mode followed by a space will fill in the
     'end' for you.  
   * Syntax highlighting has been added for .rjs files which isn't presently part of vim.
-  * In .rhtml and .erb files, '%= ' will make <%= %> and '%% ' will make <% -%>.  
+  * In .rhtml files, '%= ' will make <%= %> and '%% ' will make <% -%>.  
   * Also included is taglist.vim, a nice tidy taglist browser.  To enable it in vim, 
       simply type :TlistToggle.  You must have exuberant ctags installed for this to 
       work.  

@@ -1,0 +1,31 @@
+This is a little command wrapper for screen + vim to give
+you a nice IDE session for rails development.  Console junkies
+should like it, but through the use of Escreen it can  be 
+GUI friendly as well. 
+
+After checking out the plugin in vendor/plugins, change to a rails_root and run the command:
+  ./script/generate editor --help
+
+Using the options you like will install the ./script/editor IDE.
+
+./script/generate editor Rails
+
+will install an editor script which default the screen's name to 'Rails'
+
+Then you'll have ./script/editor available
+
+./script/editor -? for usage (from the RAILS_ROOT).
+
+BASIC USAGE
+
+This is most likely only useful for console junkies, but may help for
+any vim user in a pinch that has to make console edits (ssh or what-not).
+
+On startup (./script/editor) you'll have a variety of windows set up for rails dev.
+Many will have VIM sessions in File Browser mode, others will be shells dedicated
+to a certain task.  Screen 0 is for watching logs, screen 1 will run a console that
+will restart itself on exit.  The ide gets more powerful for experienced 'screen'
+users with split screen modes and other goodies.  See README.rails_editor for a fuller
+discussion.
+
+Copyright 2005, by The Rubyists (bougyman,trey,deathsyn)*, under the GPL

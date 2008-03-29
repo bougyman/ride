@@ -14,13 +14,16 @@ class EditorGenerator < Rails::Generator::NamedBase
       m.directory File.join(".vim","plugin")
       m.directory File.join(".vim","syntax")
 
-      m.template 'editor', File.join("script","editor")
+      m.template 'editor', File.join("script","editor"), :chmod => 0755
       m.template 'screenrc', File.join("config",".screenrc.code.erb")
 
-      m.template "vimrc", ".vimrc"
-      m.template "filetype.vim", File.join(".vim", "filetype.vim")
-      m.template "taglist.vim", File.join(".vim","plugin","taglist.vim")
-      m.template "eruby.vim", File.join(".vim","syntax","eruby.vim")
+      m.file "vimrc", ".vimrc"
+      m.file "filetype.vim", File.join(".vim", "filetype.vim")
+      m.file "taglist.vim", File.join(".vim","plugin","taglist.vim")
+      m.file "eruby.vim", File.join(".vim","syntax","eruby.vim")
+
+      m.file "README.rails_editor", "README.rails_editor"
+      m.readme "README.rails_editor.brief"
     end
   end
 
