@@ -10,8 +10,17 @@ class EditorGenerator < Rails::Generator::NamedBase
 
   def manifest
     recorded_session = record do |m|
+      m.directory ".vim"
+      m.directory File.join(".vim","plugin")
+      m.directory File.join(".vim","syntax")
+
       m.template 'editor', File.join("script","editor")
       m.template 'screenrc', File.join("config",".screenrc.code.erb")
+
+      m.template "vimrc", ".vimrc"
+      m.template "filetype.vim", File.join(".vim", "filetype.vim")
+      m.template "taglist.vim", File.join(".vim","plugin","taglist.vim")
+      m.template "eruby.vim", File.join(".vim","syntax","eruby.vim")
     end
   end
 

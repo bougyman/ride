@@ -1245,7 +1245,7 @@ au BufNewFile,BufRead *.rb,*.rbw,*.gem,*.gemspec,*.rjs,*.rxml	setf ruby
 au BufNewFile,BufRead *.rb,*.rbw,*.gem,*.gemspec,*.rjs	iab def def<CR>end<UP>
 
 " ERuby
-au BufNewFile,BufRead *.rhtml	setf eruby
+au BufNewFile,BufRead *.rhtml,*.erb	setf eruby
 
 " S-lang (or shader language!)
 au BufNewFile,BufRead *.sl			setf slang
