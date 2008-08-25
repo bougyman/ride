@@ -1,7 +1,6 @@
 = ride
 
-Documentation and support can be found at:
-* http://trac.rubyists.com/trac.fcgi/ride/wiki/RIDE
+* FIX (url)
 
 == DESCRIPTION:
 
