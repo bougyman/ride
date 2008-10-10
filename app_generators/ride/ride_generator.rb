@@ -34,6 +34,7 @@ class RideGenerator < RubiGen::Base
       m.dependency "install_rubigen_scripts", [destination_root, 'ride'],
         :shebang => options[:shebang], :collision => :force
       m.file_copy_each %w{Rakefile History.txt License.txt README.txt}
+      m.file_copy_each [%w{ftplugin ruby ruby.vim}, %w{plugin taglist.vim}, %w{syntax eruby.vim}, %w{ftdetect ruby.vim}].map { |vimfile| File.join(".vim", *vimfile) }
       script_options     = { :chmod => 0755, :shebang => options[:shebang] == RideGenerator::DEFAULT_SHEBANG ? nil : options[:shebang] }
       m.file_copy_each %w{tasks/rspec.rake tasks/ride.rake}
       m.template  "config/.screenrc.code.erb", "config/.screenrc.code.erb"
@@ -90,5 +91,11 @@ EOS
       test
       tasks
       tmp
+      .vim
+      .vim/syntax
+      .vim/plugin
+      .vim/ftdetect
+      .vim/ftplugin
+      .vim/ftplugin/ruby
     )
 end
