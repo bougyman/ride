@@ -33,10 +33,12 @@ $ script/editor --help
 * screen
 * vim (depends on file navigation)
 * ruby (we use some ERb to make the templates work)
+* gems - rubigen, hoe.
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* sudo gem install ride
+* read the postinstall for instructions (prints after install)
 
 == LICENSE:
 

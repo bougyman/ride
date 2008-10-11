@@ -31,7 +31,7 @@ describe "Ride Generator", "when application is generated" do
     end
   end
 
-  %w{Rakefile History.txt License.txt README.txt}.each do |file|
+  %w{History.txt License.txt README.txt}.each do |file|
     it "should create #{file}" do
       File.exists?(full_path(file)).should == true
     end
