@@ -1,10 +1,28 @@
 #!/usr/bin/env ruby
 # File: script/console
+right-here = File.dirname(__FILE__)
+
+if File.exists?(console = File.join(right-here, "console")) and File.executable?(console)
+  # This is rails or a newgem app or someone who provided their own script/console, use it
+  exec "#{console}"
+elsif File.exists?(rakefile = File.join(right-here, "..", "Rakefile")) and File.read(rakefile).match(/Merb\.start/)
+  # looks like merb, start merb interactive
+  exec "merb -i"
+end
+
+# not merb, not rails, not an app with its own ./script/console, run irb
 irb = RUBY_PLATFORM =~ /(:?mswin|mingw)/ ? 'irb.bat' : 'irb'
 
-libs =  " -r irb/completion"
-# Perhaps use a console_lib to store any extra methods I may want available in the cosole
-# libs << " -r #{File.dirname(__FILE__) + '/../lib/console_lib/console_logger.rb'}"
-libs <<  " -r #{File.dirname(__FILE__) + '/../lib/<%= main_lib %>.rb'}"
+# Hold an array of libraries (to be required by irb)
+libs =  []
+
+# Perhaps use a console_lib to store any extra methods we may want available in the console
+# libs << (File.dirname(__FILE__) + '/../lib/console_lib/console_logger.rb')
+
+# Add all libs to the irb session (so they can be required)
+Dir["lib/**/*"].map { |f| File.dirname(f) }.uniq.each { |dir| $: << dir }
+
+# Preload specific libs
+libs += %w{irb/completion}
 puts "Loading ride gem"
-exec "#{irb} #{libs} --simple-prompt"
+exec "#{irb} -r #{libs.join(" -r "}"

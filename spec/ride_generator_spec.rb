@@ -61,8 +61,14 @@ describe "Ride Generator", "when application is generated" do
     File.exists?(full_path(file_path)).should == true
   end
 
-  it "should create the script/ride file" do
+  it "should create the script/ride file (executable)" do
     file_path = File.join("script", "ride")
+    File.exists?(full_path(file_path)).should == true
+    FileTest.executable?(full_path(file_path)).should == true
+  end
+
+  it "should create the script/ride-console file (executable)" do
+    file_path = File.join("script", "ride-console")
     File.exists?(full_path(file_path)).should == true
     FileTest.executable?(full_path(file_path)).should == true
   end

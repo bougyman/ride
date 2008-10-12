@@ -3,7 +3,7 @@ class RideGenerator < RubiGen::Base
   DEFAULT_SHEBANG = File.join(Config::CONFIG['bindir'],
                               Config::CONFIG['ruby_install_name'])
 
-  default_options :author => nil, :language => "ruby", :shell => 'bash', :editor => 'vim', :console_debugger => 'script/console'
+  default_options :author => nil, :language => "ruby", :shell => 'bash', :editor => 'vim', :console_debugger => 'script/ride-console'
 
   attr_reader :name, :main_lib, :shell, :editor, :template, :language, :screen_name, :console_debugger
 
@@ -40,6 +40,7 @@ class RideGenerator < RubiGen::Base
       m.template  "config/.screenrc.code.erb", "config/.screenrc.code.erb"
       m.template "config/code_template.erb", "config/code_template.erb"
       m.template "script/ride", "script/ride", script_options
+      m.file "script/console", "script/ride-console", script_options
     end
   end
 
@@ -65,7 +66,7 @@ EOS
       opts.on("-e", "--editor", String, "Editor to use" "Default: vim") { |options[:editor]| }
       opts.on("-s", "--shell", String, "Shell to use" "Default: bash") { |options[:shell]| }
       opts.on("-n", "--name", String, "What to name the screen session" "Default: #{@name}") { |options[:screen_name]| }
-      opts.on("-d", "--debugger", String, "What to use for window 1, debugger", "Default: script/console") { |options[:console_debugger]| }
+      opts.on("-d", "--debugger", String, "What to use for window 1, debugger", "Default: script/ride-console") { |options[:console_debugger]| }
       opts.on("-v", "--version", "Show the #{File.basename($0)} version number and quit.")
     end
 
