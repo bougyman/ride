@@ -1,1 +1,1 @@
-app_generators/ride/templates/README.txt
+app_generators/ride/templates/RIDE_README.txt

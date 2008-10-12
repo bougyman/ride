@@ -10,9 +10,9 @@ app_generators/ride/templates/.vim/ftdetect/ruby.vim
 app_generators/ride/templates/.vim/ftplugin/ruby/ruby.vim
 app_generators/ride/templates/.vim/plugin/taglist.vim
 app_generators/ride/templates/.vim/syntax/eruby.vim
-app_generators/ride/templates/History.txt
-app_generators/ride/templates/License.txt
-app_generators/ride/templates/README.txt
+app_generators/ride/templates/RIDE_History.txt
+app_generators/ride/templates/RIDE_License.txt
+app_generators/ride/templates/RIDE_README.txt
 app_generators/ride/templates/config/.screenrc.code.erb
 app_generators/ride/templates/config/code_template.erb
 app_generators/ride/templates/script/console

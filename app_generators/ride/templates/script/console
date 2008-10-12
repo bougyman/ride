@@ -24,5 +24,5 @@ Dir["lib/**/*"].map { |f| File.dirname(f) }.uniq.each { |dir| $: << dir }
 
 # Preload specific libs
 libs += %w{irb/completion}
-puts "Loading ride gem"
-exec "#{irb} -r #{libs.join(" -r "}"
+puts "Loading interactive session"
+exec "#{irb} -r #{libs.join(" -r ")}"

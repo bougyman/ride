@@ -1,1 +1,1 @@
-app_generators/ride/templates/History.txt
+app_generators/ride/templates/RIDE_History.txt
