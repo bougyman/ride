@@ -13,6 +13,7 @@ app_generators/ride/templates/.vim/syntax/eruby.vim
 app_generators/ride/templates/RIDE_History.txt
 app_generators/ride/templates/RIDE_License.txt
 app_generators/ride/templates/RIDE_README.txt
+app_generators/ride/templates/.irbrc
 app_generators/ride/templates/config/.screenrc.code.erb
 app_generators/ride/templates/config/code_template.erb
 app_generators/ride/templates/script/console
@@ -23,6 +24,7 @@ bin/ride
 config/hoe.rb
 config/requirements.rb
 lib/ride.rb
+lib/std_err_hooks.rb
 lib/ride/version.rb
 script/console
 script/destroy
