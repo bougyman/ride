@@ -16,14 +16,23 @@ class StandardError
       file, line_number, rest = line.split(":")
       [file, line_number]
     end.uniq
-    s = "screen vim -p"
     file, line = good_lines.shift
+    if file.match("->")
+      window = file.split("->")[1]
+      %x{screen -X select #{window}}
+      %x{screen -p #{window} -X stuff ":#{line}\n"}
+      return
+    end
+    s = "screen vim -p"
     s << " +#{line} #{file}"
+    # for handling multiple levels back, disabled for now
+=begin
     good_lines.each do |l|
       file, line = l
       s << " -c tabnext -c #{line} #{file} "
     end
     s << " -c tabnext " if good_lines.size > 0
+=end
     %x{screen -X #{s}}
   end
 end

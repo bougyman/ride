@@ -1,0 +1,8 @@
+fun! LoadRubyTmp()
+  let b:myfile = &file
+  let b:filename = "/tmp/ride." . $STY . b:myfile
+  write! b:filename
+  call system("screen -p 1 -X stuff \"load " . '\"' . b:filename . '\"' . "\n\"")
+  call system("screen -X select 1")
+endfun
+nmap <F12> :call LoadRubyTmp()<CR>
