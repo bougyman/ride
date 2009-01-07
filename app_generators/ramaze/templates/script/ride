@@ -8,13 +8,13 @@ ENV['REAL_HOME'] = $old_home
 OPTIONS = {
   :directory   		=> $home,
   :environment 		=> "development",
-  :public 			=> $home + "/public/",
-  :controllers_base => $home + "/app/controllers/",
-  :views_base 		=> $home + "/app/views/",
-  :models_base 		=> $home + "/app/models/",
+  :public 		=> $home + "/public/",
+  :controllers_base => $home + "/controller/",
+  :views_base 		=> $home + "/view/",
+  :models_base 		=> $home + "/model/",
   :reports_base 	=> $home + "/vendor/reports/",
-  :helpers_base		=> $home + "/app/helpers/",
-  :apis_base 		=> $home + "/app/api/",
+  :helpers_base		=> $home + "/helpers/",
+  :apis_base 		=> $home + "/api/",
   :test_base 		=> $home + "/test/",
   :debugger 		=> "<%= console_debugger %>"
 }
