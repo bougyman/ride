@@ -95,6 +95,37 @@ describe "Ride Ramaze Generator", "when ramaze application is generated" do
     run_generator('ride', [APP_ROOT], sources, {:console_debugger => 'irb', :template => 'ramaze', :shell => 'bash', :editor => 'vim'})
   end
 
+  RideGenerator::BASEDIRS.each do |dir|
+    it "should create #{dir}" do
+      File.directory?(full_path(dir)).should == true
+    end
+  end
+
+  %w{RIDE_History.txt RIDE_License.txt RIDE_README.txt .irbrc}.each do |file|
+    it "should create #{file}" do
+      File.exists?(full_path(file)).should == true
+    end
+  end
+
+  it "should put our rake tasks in place" do
+    file_path = File.join("tasks", "ride.rake")
+    File.exists?(full_path(file_path)).should == true
+    file_path = File.join("tasks", "rspec.rake")
+    File.exists?(full_path(file_path)).should == true
+  end
+
+  %w{destroy generate console}.each do |file|
+    it "should not create #{script_path = File.join("script", file)}" do
+      File.exists?(full_path(script_path)).should_not == true
+      FileTest.executable?(full_path(script_path)).should_not == true
+    end
+  end
+
+  it "should create the config/.screenrc.code.erb file" do
+    file_path = File.join("config", ".screenrc.code.erb")
+    File.exists?(full_path(file_path)).should == true
+  end
+
   it "should create the config/code_template.erb file" do
     file_path = File.join("config", "code_template.erb")
     File.exists?(full_path(file_path)).should == true
@@ -106,7 +137,22 @@ describe "Ride Ramaze Generator", "when ramaze application is generated" do
     FileTest.executable?(full_path(file_path)).should == true
     File.read(full_path(file_path)).match(/app\/models/).should == nil
     File.read(full_path(file_path)).match(/\/model\//).should_not == nil
+    File.read(full_path(file_path)).match(%r|  :controllers_base => [^\s]+ \+ "/controller/",|).should_not == nil
+    File.read(full_path(file_path)).match(%r|  :models_base\s+=>\s[^\s]+\s+\+\s+"/model/",|).should_not == nil
   end
+
+  it "should create the script/ride-console file (executable)" do
+    file_path = File.join("script", "ride-console")
+    File.exists?(full_path(file_path)).should == true
+    FileTest.executable?(full_path(file_path)).should == true
+  end
+
+  [%w{ftplugin ruby ruby.vim}, %w{plugin taglist.vim}, %w{syntax eruby.vim}, %w{ftdetect ruby.vim}].each do |vimfile|
+    it "Should create #{vim_path = File.join(".vim", *vimfile)}" do
+      File.exists?(full_path(vim_path)).should == true
+    end
+  end
+
 
   after(:all) do
 #    bare_teardown

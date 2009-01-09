@@ -4,14 +4,15 @@ class RideGenerator < RubiGen::Base
                               Config::CONFIG['ruby_install_name'])
 
   # These get passed into options
-  default_options :author => nil, :language => "ruby", :shell => 'bash', :editor => 'vim', :console_debugger => 'script/ride-console'
+  default_options :author => nil, :language => "ruby", :shell => 'bash', :template_type => 'ramaze', :editor => 'vim', :console_debugger => 'script/ride-console'
 
-  attr_reader :name, :main_lib, :shell, :editor, :template, :language, :screen_name, :console_debugger
+  attr_reader :name, :main_lib, :shell, :editor, :template_type, :language, :screen_name, :console_debugger
 
   def initialize(runtime_args, runtime_options = {})
     super
     usage if args.empty?
-    @destination_root = File.expand_path(args.shift)
+    puts 'Args left: ' + args.inspect
+    @destination_root = File.expand_path(args.last)
     @name = base_name
     extract_options
     if @language == 'ruby'
@@ -20,13 +21,15 @@ class RideGenerator < RubiGen::Base
     ramaze_defaults = { :helper_base => "/lib/", :controller_base => "/controller/", :view_base => "/view/", :model_base => "/model/", :test_base => "/spec/" }
     rails_defaults = { :helper_base => "/app/helpers/", :controller_base => "/app/controllers/", :view_base => "/app/views/", :model_base => "/app/models/", :test_base => "/test/" }
     ruby_defaults = { :controller_base => nil, :view_base => nil, :model_base => nil, :test_base => "/spec/" }
-    defaults = case @template
+    puts "Options: " + options.inspect
+    puts 'template: ' + @template_type.to_s
+    defaults = case @template_type
     when "ramaze"
       ramaze_defaults
     when "rails"
       rails_defaults
     else
-      @template = "ruby"
+      @template_type = "ruby"
       ruby_defaults
     end
     defaults.each_pair { |k,v| options[k] = v }
@@ -55,7 +58,7 @@ class RideGenerator < RubiGen::Base
       script_options     = { :chmod => 0755, :shebang => options[:shebang] == RideGenerator::DEFAULT_SHEBANG ? nil : options[:shebang] }
       m.file_copy_each %w{tasks/rspec.rake tasks/ride.rake}
       m.template  "config/.screenrc.code.erb", "config/.screenrc.code.erb"
-      m.template "config/code_template_#{@template}.erb", "config/code_template.erb"
+      m.template "config/code_template_#{@template_type}.erb", "config/code_template.erb"
       m.template "script/ride", "script/ride", script_options
       m.file "script/console", "script/ride-console", script_options
     end
@@ -79,7 +82,7 @@ EOS
       #         "Some comment about this option",
       #         "Default: none") { |options[:author]| }
       opts.on("-l", "--language", String, "Language to develop in" "Default: ruby") { |options[:language]| }
-      opts.on("-t", "--template", String, "Project template" "Default: ramaze (ramaze, rails, newgem are supported)") { |options[:template]| options[:language] = 'ruby' if options[:template].to_s.match(/rails|ramaze|newgem/)  }
+      opts.on("-t", "--template", String, "Project template" "Default: ramaze (ramaze, rails, newgem are supported)") { |options[:template_type]| }
       opts.on("-e", "--editor", String, "Editor to use" "Default: vim") { |options[:editor]| }
       opts.on("-s", "--shell", String, "Shell to use" "Default: bash") { |options[:shell]| }
       opts.on("-n", "--name", String, "What to name the screen session" "Default: #{@name}") { |options[:screen_name]| }
@@ -92,7 +95,7 @@ EOS
       # Templates can access these value via the attr_reader-generated methods, but not the
       # raw instance variable value.
       # @author = options[:author]
-      @template = options[:template]
+      @template_type = options[:template_type]
       @language = options[:language]
       @main_dir = options[:main_dir]
       @shell = options[:shell]

@@ -6,7 +6,7 @@ screen -t reports bash -c 'umask 002;while true;do vim -c "cd <%%= OPTIONS[:repo
 <%% end %>
 screen -t controllers bash -c 'umask 002;while true;do vim -c "cd <%%= OPTIONS[:controllers_base] %>" -c "e .";sleep 1;done'
 screen -t views bash -c 'umask 002;while true;do vim -c "cd <%%= OPTIONS[:views_base] %>" -c "e .";sleep 1;done'
-screen -t helpers bash -c 'umask 002;while true;do vim -c "cd <%%= OPTIONS[:helpers_base] %>" -c "e .";sleep 1;done'
+screen -t lib bash -c 'umask 002;while true;do vim -c "cd <%%= OPTIONS[:helpers_base] %>" -c "e .";sleep 1;done'
 screen -t models bash -c 'umask 002;while true;do vim -c "cd <%%= OPTIONS[:models_base] %>" -c "e .";sleep 1;done'
 screen -t svkwork bash -c 'umask 002;while true; do SVKROOT=<%%= ENV['SVKROOT'] || (ENV['REAL_HOME'] + "/.svk")  %> RAILS_ENV=<%%= OPTIONS[:environment] %> <%%= OPTIONS[:shell] %>;sleep 1;done'
 screen -t script bash -c 'umask 002;while true;do RAILS_ENV=<%%= OPTIONS[:environment] %> <%%= OPTIONS[:shell] %>;sleep 2;done'
