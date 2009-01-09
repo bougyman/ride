@@ -9,13 +9,13 @@ OPTIONS = {
   :directory   		=> $home,
   :environment 		=> "development",
   :public 			=> $home + "/public/",
-  :controllers_base => $home + "/app/controllers/",
-  :views_base 		=> $home + "/app/views/",
-  :models_base 		=> $home + "/app/models/",
+  :controllers_base => $home + <%= options[:controller_base] -%>,
+  :views_base 		=> $home + <%= options[:view_base] -%>,
+  :models_base 		=> $home + <%= options[:model_base] -%>,
   :reports_base 	=> $home + "/vendor/reports/",
-  :helpers_base		=> $home + "/app/helpers/",
+  :helpers_base		=> $home + <%= options[:helper_base] -%>,
   :apis_base 		=> $home + "/app/api/",
-  :test_base 		=> $home + "/test/",
+  :test_base 		=> $home + <%= options[:test_base] -%>,
   :debugger 		=> "<%= console_debugger %>"
 }
 _orig = OPTIONS.dup

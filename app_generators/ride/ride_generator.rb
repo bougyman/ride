@@ -3,6 +3,7 @@ class RideGenerator < RubiGen::Base
   DEFAULT_SHEBANG = File.join(Config::CONFIG['bindir'],
                               Config::CONFIG['ruby_install_name'])
 
+  # These get passed into options
   default_options :author => nil, :language => "ruby", :shell => 'bash', :editor => 'vim', :console_debugger => 'script/ride-console'
 
   attr_reader :name, :main_lib, :shell, :editor, :template, :language, :screen_name, :console_debugger
@@ -16,6 +17,19 @@ class RideGenerator < RubiGen::Base
     if @language == 'ruby'
       @main_lib ||= File.basename(@destination_root)
     end
+    ramaze_defaults = { :helper_base => "/lib/", :controller_base => "/controller/", :view_base => "/view/", :model_base => "/model/", :test_base => "/spec/" }
+    rails_defaults = { :helper_base => "/app/helpers/", :controller_base => "/app/controllers/", :view_base => "/app/views/", :model_base => "/app/models/", :test_base => "/test/" }
+    ruby_defaults = { :controller_base => nil, :view_base => nil, :model_base => nil, :test_base => "/spec/" }
+    defaults = case @template
+    when "ramaze"
+      ramaze_defaults
+    when "rails"
+      rails_defaults
+    else
+      @template = "ruby"
+      ruby_defaults
+    end
+    defaults.each_pair { |k,v| options[k] = v }
     @screen_name ||= @name
   end
 
@@ -25,20 +39,23 @@ class RideGenerator < RubiGen::Base
       m.directory ''
       BASEDIRS.each { |path| m.directory path }
 
+      # create the test directory
+      m.directory options[:test_base].sub(%r|^/|,"").sub(%r|/$|,"")
+
       # Create stubs
       # m.template "template.rb",  "some_file_after_erb.rb"
       # m.template_copy_each ["template.rb", "template2.rb"]
       # m.file     "file",         "some_file_copied"
       # m.file_copy_each ["path/to/file", "path/to/file2"]
 
-      m.dependency "install_rubigen_scripts", [destination_root, 'ride'],
-        :shebang => options[:shebang], :collision => :force
+      #m.dependency "install_rubigen_scripts", [destination_root, 'ride'],
+      #  :shebang => options[:shebang], :collision => :force
       m.file_copy_each %w{RIDE_History.txt RIDE_License.txt RIDE_README.txt .irbrc}
       m.file_copy_each [%w{ftplugin ruby ruby.vim}, %w{plugin taglist.vim}, %w{syntax eruby.vim}, %w{ftdetect ruby.vim}].map { |vimfile| File.join(".vim", *vimfile) }
       script_options     = { :chmod => 0755, :shebang => options[:shebang] == RideGenerator::DEFAULT_SHEBANG ? nil : options[:shebang] }
       m.file_copy_each %w{tasks/rspec.rake tasks/ride.rake}
       m.template  "config/.screenrc.code.erb", "config/.screenrc.code.erb"
-      m.template "config/code_template.erb", "config/code_template.erb"
+      m.template "config/code_template_#{@template}.erb", "config/code_template.erb"
       m.template "script/ride", "script/ride", script_options
       m.file "script/console", "script/ride-console", script_options
     end
@@ -62,7 +79,7 @@ EOS
       #         "Some comment about this option",
       #         "Default: none") { |options[:author]| }
       opts.on("-l", "--language", String, "Language to develop in" "Default: ruby") { |options[:language]| }
-      opts.on("-t", "--template", String, "Project template" "Default: rails") { |options[:template]| options[:language] = 'ruby' if options[:template] == 'rails'  }
+      opts.on("-t", "--template", String, "Project template" "Default: ramaze (ramaze, rails, newgem are supported)") { |options[:template]| options[:language] = 'ruby' if options[:template].to_s.match(/rails|ramaze|newgem/)  }
       opts.on("-e", "--editor", String, "Editor to use" "Default: vim") { |options[:editor]| }
       opts.on("-s", "--shell", String, "Shell to use" "Default: bash") { |options[:shell]| }
       opts.on("-n", "--name", String, "What to name the screen session" "Default: #{@name}") { |options[:screen_name]| }
@@ -75,6 +92,7 @@ EOS
       # Templates can access these value via the attr_reader-generated methods, but not the
       # raw instance variable value.
       # @author = options[:author]
+      @template = options[:template]
       @language = options[:language]
       @main_dir = options[:main_dir]
       @shell = options[:shell]
@@ -89,7 +107,6 @@ EOS
       log
       script
       config
-      test
       tasks
       tmp
       .vim
