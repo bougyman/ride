@@ -18,7 +18,8 @@ end
 
 # Time to add your specs!
 # http://rspec.info/
-describe "Ride Generator", "when application is generated" do
+describe "Ride Rails Generator", "when rails application is generated" do
+# {{{
   include RideGeneratorSpecHelper
   before(:all) do  
     bare_setup
@@ -44,10 +45,10 @@ describe "Ride Generator", "when application is generated" do
     File.exists?(full_path(file_path)).should == true
   end
 
-  %w{destroy generate}.each do |file|
-    it "should create #{script_path = File.join("script", file)}" do
-      File.exists?(full_path(script_path)).should == true
-      FileTest.executable?(full_path(script_path)).should == true
+  %w{destroy generate console}.each do |file|
+    it "should not create #{script_path = File.join("script", file)}" do
+      File.exists?(full_path(script_path)).should_not == true
+      FileTest.executable?(full_path(script_path)).should_not == true
     end
   end
 
@@ -65,6 +66,7 @@ describe "Ride Generator", "when application is generated" do
     file_path = File.join("script", "ride")
     File.exists?(full_path(file_path)).should == true
     FileTest.executable?(full_path(file_path)).should == true
+    File.read(full_path(file_path)).match(/app\/models/).should_not == nil
   end
 
   it "should create the script/ride-console file (executable)" do
@@ -80,8 +82,33 @@ describe "Ride Generator", "when application is generated" do
   end
 
   after(:all) do
-#    bare_teardown
+    bare_teardown
   end
   
 end
+# }}}
 
+describe "Ride Ramaze Generator", "when ramaze application is generated" do
+  include RideGeneratorSpecHelper
+  before(:all) do  
+    bare_setup
+    run_generator('ride', [APP_ROOT], sources, {:console_debugger => 'irb', :template => 'ramaze', :shell => 'bash', :editor => 'vim'})
+  end
+
+  it "should create the config/code_template.erb file" do
+    file_path = File.join("config", "code_template.erb")
+    File.exists?(full_path(file_path)).should == true
+  end
+
+  it "should create the script/ride file (executable)" do
+    file_path = File.join("script", "ride")
+    File.exists?(full_path(file_path)).should == true
+    FileTest.executable?(full_path(file_path)).should == true
+    File.read(full_path(file_path)).match(/app\/models/).should == nil
+    File.read(full_path(file_path)).match(/\/model\//).should_not == nil
+  end
+
+  after(:all) do
+#    bare_teardown
+  end
+end
