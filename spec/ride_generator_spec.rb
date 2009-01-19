@@ -23,7 +23,7 @@ describe "Ride Rails Generator", "when rails application is generated" do
   include RideGeneratorSpecHelper
   before(:all) do  
     bare_setup
-    run_generator('ride', [APP_ROOT], sources, {:console_debugger => 'irb', :template => 'rails', :shell => 'bash', :editor => 'vim'})
+    run_generator('ride', [APP_ROOT], sources, {:console_debugger => 'irb', :project_type => 'rails', :shell => 'bash', :editor => 'vim'})
   end
 
   RideGenerator::BASEDIRS.each do |dir|
@@ -92,7 +92,7 @@ describe "Ride Ramaze Generator", "when ramaze application is generated" do
   include RideGeneratorSpecHelper
   before(:all) do  
     bare_setup
-    run_generator('ride', [APP_ROOT], sources, {:console_debugger => 'irb', :template => 'ramaze', :shell => 'bash', :editor => 'vim'})
+    run_generator('ride', [APP_ROOT], sources, {:console_debugger => 'irb', :project_type => 'ramaze', :shell => 'bash', :editor => 'vim'})
   end
 
   RideGenerator::BASEDIRS.each do |dir|

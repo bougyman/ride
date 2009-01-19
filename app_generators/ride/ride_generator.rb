@@ -6,7 +6,7 @@ class RideGenerator < RubiGen::Base
   # These get passed into options
   default_options :author => nil, :language => "ruby", :shell => 'bash', :template_type => 'ramaze', :editor => 'vim', :console_debugger => 'script/ride-console'
 
-  attr_reader :name, :main_lib, :shell, :editor, :template_type, :language, :screen_name, :console_debugger
+  attr_reader :name, :main_lib, :shell, :editor, :template_type, :language, :screen_name, :console_debugger, :shell
 
   def initialize(runtime_args, runtime_options = {})
     super
@@ -23,7 +23,7 @@ class RideGenerator < RubiGen::Base
     ruby_defaults = { :controller_base => nil, :view_base => nil, :model_base => nil, :test_base => "/spec/" }
     puts "Options: " + options.inspect
     puts 'template: ' + @template_type.to_s
-    defaults = case @template_type
+    defaults = case @template_type.to_s
     when "ramaze"
       ramaze_defaults
     when "rails"
@@ -81,12 +81,12 @@ EOS
       # opts.on("-a", "--author=\"Your Name\"", String,
       #         "Some comment about this option",
       #         "Default: none") { |options[:author]| }
-      opts.on("-l", "--language", String, "Language to develop in" "Default: ruby") { |options[:language]| }
-      opts.on("-t", "--template", String, "Project template" "Default: ramaze (ramaze, rails, newgem are supported)") { |options[:template_type]| }
-      opts.on("-e", "--editor", String, "Editor to use" "Default: vim") { |options[:editor]| }
-      opts.on("-s", "--shell", String, "Shell to use" "Default: bash") { |options[:shell]| }
-      opts.on("-n", "--name", String, "What to name the screen session" "Default: #{@name}") { |options[:screen_name]| }
-      opts.on("-d", "--debugger", String, "What to use for window 1, debugger", "Default: script/ride-console") { |options[:console_debugger]| }
+      opts.on("--language EDITOR", String, "Language to develop in" ,"Default: ruby") { |options[:language]| }
+      opts.on("--template TEMPLATE", String, "Project template (support ramaze, rails, newgem)", "Default: ramaze") { |x| options[:project_type] = x }
+      opts.on("--editor EDITOR", String, "Editor to use", "Default: vim") { |options[:editor]| }
+      opts.on("--shell SHELL", String, "Shell to use", "Default: bash") { |options[:shell]| }
+      opts.on("--name NAME", String, "What to name the screen session", "Default: #{@name}") { |options[:screen_name]| }
+      opts.on("--debugger SCRIPT", String, "What to use for window 1, debugger", "Default: script/ride-console") { |options[:console_debugger]| }
       opts.on("-v", "--version", "Show the #{File.basename($0)} version number and quit.")
     end
 
@@ -95,7 +95,8 @@ EOS
       # Templates can access these value via the attr_reader-generated methods, but not the
       # raw instance variable value.
       # @author = options[:author]
-      @template_type = options[:template_type]
+      @template_type = options[:project_type]
+      puts "Extracted #{template_type} as template_type"
       @language = options[:language]
       @main_dir = options[:main_dir]
       @shell = options[:shell]
