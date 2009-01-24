@@ -1,0 +1,1 @@
+app_generators/ride/templates/RIDE_License.txt

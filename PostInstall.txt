@@ -1,0 +1,21 @@
+Currently ride is only viable for rails or NewGem ruby projects, though
+support for more generic projects is on the way.  
+
+USAGE:
+from the root of a rails or newgem project -
+  $ ride .
+  $ ./script/ride --help
+  $ ./script/ride <options>
+
+With no options you get an IDE with 9 windows open, irb on window 1 and
+a root file browser on 2.  The other windows suppose you're in a rails tree,
+but can be changed with command line options or changes to the template
+in config/.screenrc.code.erb, which you can replace or copy to make
+a new screen template.  The home directory in the IDE is changed to
+the projects' root so cd ~ takes you to the project root on a console window.
+Your actual home is available via the $REAL_HOME environment variable.  
+
+Tip: Hit F12 while editing any ruby file and the current state of the buffer
+     will be loaded in irb, and you'll be switched to that window
+
+For more information on ride, see http://rubyists.com/
