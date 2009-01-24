@@ -12,7 +12,7 @@ module RideGeneratorSpecHelper
   end
 
   def full_path(some_path)
-    File.join(APP_ROOT, some_path)
+    File.join(APP_ROOT, @template_type, some_path)
   end
 end
 
@@ -23,7 +23,8 @@ describe "Ride Rails Generator", "when rails application is generated" do
   include RideGeneratorSpecHelper
   before(:all) do  
     bare_setup
-    run_generator('ride', [APP_ROOT], sources, {:console_debugger => 'irb', :project_type => 'rails', :shell => 'bash', :editor => 'vim'})
+    @template_type = 'rails'
+    run_generator('ride', [File.join(APP_ROOT,@template_type)], sources, {:console_debugger => 'irb', :project_type => @template_type, :shell => 'bash', :editor => 'vim'})
   end
 
   RideGenerator::BASEDIRS.each do |dir|
@@ -32,7 +33,7 @@ describe "Ride Rails Generator", "when rails application is generated" do
     end
   end
 
-  %w{RIDE_History.txt RIDE_License.txt RIDE_README.txt .irbrc}.each do |file|
+  %w{RIDE_History.txt RIDE_License.txt RIDE_README.txt .vimrc .irbrc}.each do |file|
     it "should create #{file}" do
       File.exists?(full_path(file)).should == true
     end
@@ -82,7 +83,7 @@ describe "Ride Rails Generator", "when rails application is generated" do
   end
 
   after(:all) do
-    bare_teardown
+    #bare_teardown
   end
   
 end
@@ -91,8 +92,9 @@ end
 describe "Ride Ramaze Generator", "when ramaze application is generated" do
   include RideGeneratorSpecHelper
   before(:all) do  
+    @template_type = 'ramaze'
     bare_setup
-    run_generator('ride', [APP_ROOT], sources, {:console_debugger => 'irb', :project_type => 'ramaze', :shell => 'bash', :editor => 'vim'})
+    run_generator('ride', [File.join(APP_ROOT, @template_type)], sources, {:console_debugger => 'irb', :project_type => @template_type, :shell => 'bash', :editor => 'vim'})
   end
 
   RideGenerator::BASEDIRS.each do |dir|
@@ -101,7 +103,7 @@ describe "Ride Ramaze Generator", "when ramaze application is generated" do
     end
   end
 
-  %w{RIDE_History.txt RIDE_License.txt RIDE_README.txt .irbrc}.each do |file|
+  %w{RIDE_History.txt RIDE_License.txt RIDE_README.txt .vimrc .irbrc}.each do |file|
     it "should create #{file}" do
       File.exists?(full_path(file)).should == true
     end

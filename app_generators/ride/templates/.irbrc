@@ -6,4 +6,6 @@ end
 
 require "rubygems"
 require "ride"
-require "std_err_hooks"
+if ENV['RIDE_DEBUG']
+  require "std_err_hooks"
+end
