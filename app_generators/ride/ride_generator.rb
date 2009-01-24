@@ -36,7 +36,22 @@ class RideGenerator < RubiGen::Base
     @screen_name ||= @name
   end
 
+  def create_ruby
+    puts %x{newgem #{@destination_root}}
+  end
+
+  def create_ramaze
+    puts %x{ramaze --create #{@destination_root}}
+  end
+
+  def create_rails
+    puts %x{rails #{@destination_root}}
+  end
+
   def manifest
+    unless File.exists?(@destination_root) and File.directory?(@destination_root)
+      self.send("create_#{template_type}".to_sym)
+    end
     record do |m|
       # Ensure appropriate folder(s) exists
       m.directory ''

@@ -47,9 +47,9 @@ describe "Ride Rails Generator", "when rails application is generated" do
   end
 
   %w{destroy generate console}.each do |file|
-    it "should not create #{script_path = File.join("script", file)}" do
-      File.exists?(full_path(script_path)).should_not == true
-      FileTest.executable?(full_path(script_path)).should_not == true
+    it "should not overwrite rails #{script_path = File.join("script", file)}" do
+      File.exists?(full_path(script_path)).should == true
+      File.readlines(full_path(script_path))[1].to_s.should =~ %r{/../config/boot}
     end
   end
 
